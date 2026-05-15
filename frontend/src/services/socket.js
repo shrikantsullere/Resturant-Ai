@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'https://restorent-pos-production.up.railway.app'; // import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+const SOCKET_URL = 'http://localhost:5000';
 
 class SocketService {
   constructor() {

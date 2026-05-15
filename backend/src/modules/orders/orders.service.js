@@ -18,7 +18,7 @@ class OrdersService {
 
     try {
       // 1. Create Order
-      const orderId = await ordersRepository.create(orderData);
+      const orderId = await ordersRepository.create(orderData, connection);
 
       // 2. Create Order Items
       for (const item of items) {

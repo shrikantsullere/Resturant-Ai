@@ -29,8 +29,29 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (user?.id) {
       socketService.connect(user.id);
+      
+      // Realtime Profile Sync
+      const handleProfileUpdate = (data) => {
+        if (data.userId === user.id) {
+          console.log('🔄 [AuthContext] Profile update received via socket:', data.updates);
+          setUser(prev => {
+            const updatedUser = { ...prev, ...data.updates };
+            // Standardize full_name mapping if 'name' was sent
+            if (data.updates.name) updatedUser.full_name = data.updates.name;
+            if (data.updates.mobile) updatedUser.phone = data.updates.mobile;
+            
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            return updatedUser;
+          });
+        }
+      };
+
+      socketService.on('profile_updated', handleProfileUpdate);
+      return () => {
+        socketService.off('profile_updated', handleProfileUpdate);
+        socketService.disconnect();
+      };
     }
-    return () => socketService.disconnect();
   }, [user?.id]);
 
   const login = useCallback(async (email, password) => {

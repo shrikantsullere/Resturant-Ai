@@ -18,12 +18,13 @@ class BaseModel {
     return rows[0];
   }
 
-  async create(data) {
+  async create(data, connection = null) {
+    const db = connection || pool;
     const keys = Object.keys(data);
     const values = Object.values(data).map(v => v === undefined ? null : v);
     const placeholders = keys.map(() => '?').join(', ');
     const sql = `INSERT INTO ${this.tableName} (${keys.join(', ')}) VALUES (${placeholders})`;
-    const [result] = await pool.execute(sql, values);
+    const [result] = await db.execute(sql, values);
     return result.insertId;
   }
 

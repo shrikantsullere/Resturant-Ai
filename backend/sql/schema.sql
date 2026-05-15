@@ -203,6 +203,8 @@ CREATE TABLE IF NOT EXISTS reservations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     reservation_code VARCHAR(50) NOT NULL UNIQUE,
     guest_id INT,
+    table_id INT NULL,
+    room_id INT NULL,
     booking_type ENUM('table', 'room', 'event', 'transport') DEFAULT 'table',
     booking_date DATE NOT NULL,
     booking_time TIME NOT NULL,
@@ -212,7 +214,9 @@ CREATE TABLE IF NOT EXISTS reservations (
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt TIMESTAMP NULL,
-    FOREIGN KEY (guest_id) REFERENCES guests(id)
+    FOREIGN KEY (guest_id) REFERENCES guests(id),
+    FOREIGN KEY (table_id) REFERENCES restaurant_tables(id),
+    FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
 
 -- 15. Room Bookings

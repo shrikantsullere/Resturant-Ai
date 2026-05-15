@@ -10,6 +10,7 @@ import { NotificationProvider } from '@/context/NotificationContext';
 import { ToastProvider } from '@/context/ToastContext';
 import MainLayout from '@/layouts/MainLayout';
 import ScrollToTop from '@/components/common/ScrollToTop';
+import AIChat from '@/components/common/AIChat';
 
 
 // Website
@@ -381,6 +382,7 @@ function App() {
 
                       <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
+                    <AIChat />
                   </Router>
                 </CommunicationProvider>
               </HospitalityProvider>

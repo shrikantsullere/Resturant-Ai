@@ -32,6 +32,21 @@ class AuthService {
       token
     };
   }
+
+  async updateProfile(userId, data) {
+    if (!userId) throw new Error('User ID is required for profile update');
+    
+    const updateData = {};
+    if (data.name) updateData.full_name = data.name;
+    if (data.mobile) updateData.phone = data.mobile;
+    
+    if (Object.keys(updateData).length === 0) {
+      throw new Error('No valid profile data provided for update');
+    }
+
+    const affectedRows = await authModel.update(userId, updateData);
+    return { affectedRows };
+  }
 }
 
 module.exports = new AuthService();
